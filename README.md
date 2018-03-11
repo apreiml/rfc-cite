@@ -1,10 +1,10 @@
 A simple cli tool to create a bibtex entry for RFCs using the rfc-editor.org
-services. It follows recomendations from
+services. It follows recommendations from
 https://tools.ietf.org/html/draft-carpenter-rfc-citation-recs-01#section-5.2
 
 # Usage
 
-First install clojure (https://clojure.org/guides/getting_started)
+First install clojure (https://clojure.org/guides/getting_started).
 
 Then run the following command in the project directory:
 
