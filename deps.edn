@@ -1,5 +1,6 @@
 {:deps
   {
     org.clojure/data.zip {:mvn/version "0.1.2"}
+    clj-http {:mvn/version "3.8.0"}
   }
 }

@@ -1,7 +1,8 @@
 (ns rfc-cite
   (:require [clojure.xml :as xml]
             [clojure.zip :as zip]
-            [clojure.data.zip.xml :as zip-xml]))
+            [clojure.data.zip.xml :as zip-xml]
+            [clj-http.client :as client]))
 
 (def default-entry { 
     "howpublished" "Internet Requests for Comments",
@@ -13,6 +14,22 @@
 (defn bibxml-url
   [rfc]
   (str "https://www.rfc-editor.org/refs/bibxml/reference.RFC." rfc ".xml"))
+
+(defn rfc-url
+  [rfc]
+  (str "https://www.rfc-editor.org/rfc/rfc" rfc ".txt"))
+
+(defn entry-urls
+  [rfc]
+  (let [url (rfc-url rfc)]
+    {"number" rfc, 
+     "url" url, 
+     "note" (str "\\url{" url "}")}))
+
+(defn get-issn
+  [rfc]
+  (let [text (:body (client/get (rfc-url rfc)))]
+    {"issn" (nth (re-find #"ISSN: (\S+)" text) 1)}))
 
 (defn parse-xml!
   [rfc]
@@ -26,7 +43,7 @@
 
 (defn entry-str
   [rfc, entry]
-  (let [entry (into entry {"number" rfc})]
+  (let [entry (conj entry (entry-urls rfc) (get-issn rfc))]
     (str "@techreport{rfc" rfc ",\n\t"
       (clojure.string/join ",\n\t" (map row-str (seq entry)))
       "\n}")))
