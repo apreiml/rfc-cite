@@ -23,8 +23,7 @@
   [rfc]
   (let [url (rfc-url rfc)]
     {"number" rfc, 
-     "url" url, 
-     "note" (str "\\url{" url "}")}))
+     "url" url}))
 
 (defn get-issn
   [rfc]
